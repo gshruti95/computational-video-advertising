@@ -1,0 +1,40 @@
+function [x,y] = optimize_ad_placement(m,p,M,A,V,Vad)
+    % i,j : Scene index, Ad Index
+    % n,m,p : #scenes, #Probable Insertion Points, # of ads, m = n - 1;
+    % M : # of ads to be inserted
+    % x(i), y(i) : Binary variables for insertion point/ ads
+    % AI(x(i)) : Function to determine ad insertion point
+    % AS(x(i),y(i)) : Function to select the appropriate ad
+    % A(i), A(i+1), max(A): Arousal score of current, next scene, max val
+    % V(i), V(i+i), max(V): Valence score of current, next scene, max val
+    cvx_begin
+        variable a
+        variable b
+        variable x(m) binary
+        variable y(p) binary
+        maximize(a*AI(x,m,V,A)+b*AS(x,y,m,p,V,Vad))
+        subject to
+            a + b == 1
+            sum(x) == M
+            sum(y) == M
+            %TODO Uniform Distribution of ads
+    cvx_end
+end
+
+function score = AI(x,m,V,A)
+    score = 0;
+    for i=1:m
+        score = score + x(i)*( (A(i+1)-A(i))*(max(A)-A(i))/max(A) ... 
+            + (V(i+1))/(max(V)) + (V(i+1))/(V(i)) );
+    end
+end
+
+function score = AS(x,y,m,p,V,Vad) % TODO Add relevance score
+    score = 0;
+    for i = 1:m
+        for j = 1:p
+            score = score + x(i)*y(j)*( 1 - abs((V(i) - Vad(i)) / ...
+                (max(max(V),max(Vad)))) );
+        end
+    end
+end
