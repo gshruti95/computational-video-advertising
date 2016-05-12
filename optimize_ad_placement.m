@@ -7,18 +7,19 @@ function [x,y] = optimize_ad_placement(m,p,M,A,V,Vad)
     % AS(x(i),y(i)) : Function to select the appropriate ad
     % A(i), A(i+1), max(A): Arousal score of current, next scene, max val
     % V(i), V(i+i), max(V): Valence score of current, next scene, max val
-    cvx_begin
-        variable a
-        variable b
-        variable x(m) binary
-        variable y(p) binary
-        maximize(a*AI(x,m,V,A)+b*AS(x,y,m,p,V,Vad))
-        subject to
-            a + b == 1
-            sum(x) == M
-            sum(y) == M
-            %TODO Uniform Distribution of ads
-    cvx_end
+    
+%     cvx_begin
+%         variable a
+%         variable b
+%         variable x(m) binary
+%         variable y(p) binary
+%         maximize(a*AI(x,m,V,A)+b*AS(x,y,m,p,V,Vad))
+%         subject to
+%             a + b == 1
+%             sum(x) == M
+%             sum(y) == M
+%             %TODO Uniform Distribution of ads
+%     cvx_end
 end
 
 function score = AI(x,m,V,A)
