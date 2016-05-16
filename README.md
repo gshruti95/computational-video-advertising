@@ -1,5 +1,7 @@
 # Computational Video Advertising
 
+Shruti Gullapuram and Abhinav Shukla
+
 Steps
 
 1. Segment the scene and get viable ad insertion points
