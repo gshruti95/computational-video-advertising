@@ -1,7 +1,5 @@
 % Computational Video Advertising
 
-system('C:/Users/Abhinav/Desktop/Software and Tools/ffmpeg/bin/ffmpeg');
-
 % Segment the scene and get viable ad insertion points
 frame_indices = segment_scene('./frames/');
 

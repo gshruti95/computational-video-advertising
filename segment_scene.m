@@ -1,6 +1,16 @@
 
-function frame_list = segment_scene(dir_name)
+function frame_list = segment_scene(video_file_name)
+if ispc
+%     system('rm ./frames/*.jpg');
+    ffmpeg_frame_cmd = sprintf('%s%s%s%s%s%s%s%s',pwd,'/ffmpeg/bin/ffmpeg -i ',...
+        pwd,'/',video_file_name,' -qscale:v 4 ',pwd,'/frames/out%08d.jpg');
+    disp(ffmpeg_frame_cmd);
+    system(ffmpeg_frame_cmd);
+else
+    
+end
 
+dir_name = './frames/';
 frames = dir(dir_name);
 total_frames = length(frames);
 
@@ -10,7 +20,8 @@ G1=imhist(I1(:,:,2));
 B1=imhist(I1(:,:,3));
 
 HD = [];
-    
+
+disp('Calculating HODs');
 for i = 4:total_frames  
     I2=imread(strcat(dir_name,frames(i).name));
     R2=imhist(I2(:,:,1));
@@ -25,6 +36,7 @@ end
 %arr = HD;
 pos =[];
 
+disp('Windowing around 10 frames');
 for i=11:length(HD)-10
 	sum1 = 0;
 	sum2 = 0;
