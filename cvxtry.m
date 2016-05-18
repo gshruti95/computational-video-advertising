@@ -4,7 +4,7 @@ M = 1;
 p = 3;
 A = [10,50,90];
 V = [30,50,70];
-Vad = [60,40,50];
+Vad = [90,50,10];
 
 
 % Genetic Algorithm works
@@ -16,11 +16,11 @@ A = [];
 b = [];
 Aeq = [];
 Beq = [];
-lb = [0,0,0,0,0];
-ub = [1,1,1,1,1];
-nonlcon = @constraint;
+lb = zeros(nvars,1)';
+ub = ones(nvars,1)';
+%nonlcon = @constraint;
 IntCon = [1,2,3,4,5];
-x = ga(fun,nvars,A,b,Aeq,Beq,lb,ub,nonlcon,IntCon);
+x = ga(fun,nvars,A,b,Aeq,Beq,lb,ub,@(x)constraint(x,m,p,M),IntCon);
 yfinal = x(m+1:m+p);
 xfinal = x(1:m);
 x,xfinal,yfinal
